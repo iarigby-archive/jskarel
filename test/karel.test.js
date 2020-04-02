@@ -33,11 +33,11 @@ describe('karel movement', () => {
 })
 
 describe('beepers', () => {
-    const world = new World({
+    const world = {
         width: 5,
         height: 5,
         beepers: [new C(2, 1)]
-    })
+    }
     const karel = new Karel({ world: world })
     it('pick one beeper', () => {
         karel.move()
@@ -57,7 +57,7 @@ describe('beepers', () => {
         expect(world.beepers.length).equal(0)
     })
     it('add multiple beepers at once', () => {
-        world.addBeepers([new C(2, 2), new C(3, 3)])
+        karel.world.addBeepers([new C(2, 2), new C(3, 3)])
         expect(world.beepers.length).equal(2)
     })
     it('world with empty beepers', () => {
@@ -67,15 +67,16 @@ describe('beepers', () => {
 })
 
 describe('walls', () => {
-    const world = new World({
+    const world = {
         width: 3,
         height: 3
-    })
-    it('add walls for edges', () => {
-        expect(world.walls.length).equal(12)
-    })
+    }
+    
     const karel = new Karel({
         world: world
+    })
+    it('add walls for edges', () => {
+        expect(karel.world.walls.length).equal(12)
     })
     it('karel cannot move past walls', () => {
         karel.move()
@@ -91,7 +92,7 @@ describe('walls', () => {
         expect(() => karel.move()).to.throw("there is a wall in front of Karel")
     })
     it('walls can be within the world as well', () => {
-        world.addWall(new Wall(new C(3, 3), new C(2, 3)))
+        karel.world.addWall(new Wall(new C(3, 3), new C(2, 3)))
         karel.turnLeft()
         expect(() => karel.move()).to.throw("there is a wall in front of Karel")
     })

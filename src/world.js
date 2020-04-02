@@ -1,7 +1,7 @@
 const C = require('./coordinates')
 const Wall = require('./wall')
 class World {
-    constructor(opts) {
+    constructor(opts = {}) {
         this.width = opts.width || 10
         this.height = opts.height || 10
         this.walls = []

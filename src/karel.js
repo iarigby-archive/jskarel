@@ -10,15 +10,7 @@ const Directions = [
 
 module.exports = class {
     constructor(opts = {}) {
-        if (opts.world) {
-            if (opts.world.existsWall) {
-                this.world = opts.world
-            } else {
-                this.world = new World(opts.world)
-            }
-        } else {
-            this.world = new World({})
-        }
+        this.world = new World(opts.world)
         this.direction = opts.direction || 0
         if (opts.position) {
             this.position = opts.position.set ? opts.position : C.fromArray(opts.position)
