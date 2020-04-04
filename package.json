@@ -6,7 +6,8 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "ts-mocha test/*.test.ts",
-    "watch": "ts-mocha -w test/*test.ts --watch-files test/*test.ts,src/**/*.ts",
+    "watch": "ts-mocha --reporter min -w test/*test.ts --watch-files test/*test.ts,src/**/*.ts",
+    "coverage": "nyc yarn test && rm -r .nyc_output",
     "build": "tsc"
   },
   "repository": "github.com/iarigby/jskarel",
