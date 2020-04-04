@@ -1,16 +1,27 @@
-const C = require('./coordinates')
-const Wall = require('./wall')
-class World {
-    constructor(opts = {}) {
+import { C } from './coordinates'
+import { Wall } from './wall'
+
+export interface WorldOpts {
+    width?: number,
+    height?: number,
+    walls?: any
+    beepers?: any
+}
+export class World {
+    public width: number
+    public height: number
+    public walls: Wall[]
+    public beepers: C[]
+    constructor(opts: WorldOpts = {}) {
         this.width = opts.width || 10
         this.height = opts.height || 10
         this.walls = []
         const walls = opts.walls || []
-        walls.forEach(wall => {
+        walls.forEach((wall: any) => {
             if (wall.first && wall.second) {
                 this.walls.push(wall)
             } else {
-                const [ first, second ] = wall.map(C.fromArray)
+                const [first, second] = wall.map(C.fromArray)
                 this.walls.push(new Wall(first, second))
             }
         })
@@ -28,20 +39,20 @@ class World {
         }
     }
 
-    addBeepers(indices) {
+    addBeepers(indices: any): World {
         if (indices.length)
-            indices.forEach(i => this.beepers.push(i))
+            indices.forEach((i: C) => this.beepers.push(i))
         else
             this.beepers.push(indices)
         return this
     }
 
-    addWall(wall) {
+    addWall(wall: Wall): void {
         this.walls.push(wall)
     }
 
-    removeBeeper(c) {
-        const index = this.beepersPresent(c) 
+    removeBeeper(c: C): void {
+        const index = this.beepersPresent(c)
         if (index > -1) {
             this.beepers.splice(index, 1)
         } else {
@@ -49,16 +60,14 @@ class World {
         }
     }
 
-    beepersPresent(c) {
+    beepersPresent(c: C): number {
         return this.beepers.map(x => x.equal(c)).indexOf(true)
     }
 
-    existsWall(first, second) {
+    existsWall(first: C, second: C): boolean {
         const foundWalls = this.walls.filter(wall =>
             wall.same(first, second)
         )
         return foundWalls.length == 1
     }
 }
-
-module.exports = World

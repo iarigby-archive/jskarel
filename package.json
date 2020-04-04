@@ -2,15 +2,23 @@
   "name": "jskarel",
   "version": "1.0.0",
   "description": "Karel Implementation in Javascript",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "mocha test/*.test.js"
+    "test": "ts-mocha test/*.test.ts",
+    "watch": "ts-mocha -w test/*test.ts --watch-files test/*test.ts,src/**/*.ts",
+    "build": "tsc"
   },
   "repository": "github.com/iarigby/jskarel",
   "author": "iarigby <marvinzem@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.9.8",
     "chai": "^4.2.0",
-    "mocha": "^7.1.1"
+    "mocha": "^7.0.0",
+    "ts-mocha": "^7.0.0",
+    "typescript": "^3.8.3"
   }
 }

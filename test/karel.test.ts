@@ -1,8 +1,9 @@
-const { expect } = require('chai')
-const Karel = require('../src/karel')
-const Wall = require('../src/wall')
-const World = require('../src/world')
-const C = require('../src/coordinates')
+import { expect } from 'chai'
+import { Karel } from '../src/karel'
+import { Wall } from '../src/wall'
+import { World } from '../src/world'
+import { C } from '../src/coordinates'
+
 describe('karel movement', () => {
     const karel = new Karel({})
     it('moving once', () => {
