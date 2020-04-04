@@ -53,7 +53,7 @@ export class Karel {
         this.world.removeBeeper(this.position)
     }
     putBeeper(): void {
-        this.world.addBeepers(this.position)
+        this.world.addBeeper(this.position)
     }
     toString() {
         return `Karel is on position ${this.position}, coordinates of beepers: ${this.world.beepers}`

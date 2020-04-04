@@ -2,9 +2,9 @@ import { C } from './coordinates'
 import { Wall } from './wall'
 
 export interface WorldOpts {
-    width?: number,
-    height?: number,
-    walls?: any
+    width?: number
+    height?: number
+    walls?: any[]
     beepers?: any
 }
 export class World {
@@ -16,41 +16,44 @@ export class World {
         this.width = opts.width || 10
         this.height = opts.height || 10
         this.walls = []
-        const walls = opts.walls || []
-        walls.forEach((wall: any) => {
-            if (wall.first && wall.second) {
-                this.walls.push(wall)
-            } else {
-                const [first, second] = wall.map(C.fromArray)
-                this.walls.push(new Wall(first, second))
-            }
-        })
+        if (opts.walls) {
+            this.addWalls(opts.walls)
+        }
         const borders = Wall.borders(this.width, this.height)
         this.walls = this.walls
             .concat(borders)
-        if (opts.beepers && opts.beepers.length) {
-            if (opts.beepers[0].set) {
-                this.beepers = opts.beepers
-            } else {
-                this.beepers = opts.beepers.map(C.fromArray)
-            }
-        } else {
-            this.beepers = []
+        this.beepers = []
+        if (opts.beepers) {
+            this.addBeepers(opts.beepers)
         }
     }
 
-    addBeepers(indices: any): World {
-        if (indices.length)
-            indices.forEach((i: C) => this.beepers.push(i))
-        else
-            this.beepers.push(indices)
+    addBeeper(beeper: C): World {
+        this.beepers.push(beeper)
+        return this
+    }
+    addBeepers(indices: any[]): World {
+        indices
+            .map((beeper: any) =>
+                beeper.length ? C.fromArray(beeper) : beeper)
+            .forEach(b => this.addBeeper(b))
         return this
     }
 
-    addWall(wall: Wall): void {
+    addWall(wall: Wall): World {
         this.walls.push(wall)
+        return this
     }
 
+    addWalls(walls: any[]): World {
+        walls
+            .map(wall => {
+                if (wall.length)
+                    return wall.map(C.fromArray)
+                return wall
+            }).forEach(w => this.addWall(w))
+        return this
+    }
     removeBeeper(c: C): void {
         const index = this.beepersPresent(c)
         if (index > -1) {
