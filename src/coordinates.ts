@@ -4,7 +4,7 @@ export class C {
     }
     constructor(public x: number, public y: number) {
     }
-    set(x: number | C, y?: number): void {
+    set(x: number | C, y?: number): C {
         if (typeof(x) == 'number') {
             this.x = x
             this.y = y!
@@ -12,9 +12,10 @@ export class C {
             this.x = x.x
             this.y = x.y
         }
+        return this
     }
-    move(x: number, y: number): void {
-        this.set(this.getNext(x, y))
+    move(x: number, y: number): C {
+        return this.set(this.getNext(x, y))
     }
     getNext(x: number, y: number): C {
         return new C(this.x + x, this.y + y)
