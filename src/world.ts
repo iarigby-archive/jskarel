@@ -55,7 +55,7 @@ export class World {
         return this
     }
     removeBeeper(c: C): void {
-        const index = this.beepersPresent(c)
+        const index = this.beepers.map(x => x.equal(c)).indexOf(true)
         if (index > -1) {
             this.beepers.splice(index, 1)
         } else {
@@ -63,8 +63,8 @@ export class World {
         }
     }
 
-    beepersPresent(c: C): number {
-        return this.beepers.map(x => x.equal(c)).indexOf(true)
+    beepersPresent(c: C): boolean {
+        return this.beepersCount(c) > 0
     }
 
     existsWall(first: C, second: C): boolean {
@@ -72,5 +72,8 @@ export class World {
             wall.same(first, second)
         )
         return foundWalls.length == 1
+    }
+    beepersCount(c: C): number {
+        return this.beepers.filter(b => b.equal(c)).length
     }
 }

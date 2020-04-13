@@ -52,9 +52,9 @@ describe('world functions', () => {
     })
     it('beepers present', () => {
         const beeper = new C(1, 1)
-        expect(world.beepersPresent(beeper)).eql(0)
+        expect(world.beepersPresent(beeper)).eql(true)
         world.removeBeeper(beeper)
-        expect(world.beepersPresent(beeper)).eql(-1)
+        expect(world.beepersPresent(beeper)).eql(false)
         expect(() => world.removeBeeper(beeper)).throws("no beepers on this corner")
     })
     it('exists wall', () => {

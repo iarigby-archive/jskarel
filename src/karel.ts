@@ -32,11 +32,11 @@ export class Karel {
         this.position.set(x, y)
         return this
     }
-    leftDirection(): number {
-        return (this.direction + 1) % (Directions.length)
+    getDirection(d: number = 1): number {
+        return (this.direction + d) % (Directions.length)
     }
     turnLeft(): void {
-        this.direction = this.leftDirection()
+        this.direction = this.getDirection()
     }
     move(): void {
         const direction = Directions[this.direction]
@@ -56,14 +56,14 @@ export class Karel {
         this.world.addBeeper(this.position)
     }
     toString() {
-        return `Karel is on position ${this.position}, coordinates of beepers: ${this.world.beepers}`
+        return `Karel is on position ${this.position}, coordinates of beepers: ${this.world.beepers}, world: ${this.world.width}x${this.world.height}`
     }
     frontIsClear(directionIndex = this.direction): boolean {
         const direction = Directions[directionIndex]
         return !this.world.existsWall(this.position, this.nextCorner(direction))
     }
     beepersPresent(): boolean {
-        return this.world.beepersPresent(this.position) > -1
+        return this.world.beepersPresent(this.position)
     }
     noBeepersPresent(): boolean {
         return !this.beepersPresent()
@@ -72,6 +72,21 @@ export class Karel {
         return !this.frontIsClear()
     }
     leftIsClear(): boolean {
-        return this.frontIsClear(this.leftDirection())
+        return this.frontIsClear(this.getDirection())
+    }
+    rightIsClear(): boolean {
+        return this.frontIsClear(this.getDirection(3))
+    }
+    facingEast(): boolean {
+        return this.direction == 0
+    }
+    facingNorth(): boolean {
+        return this.direction == 1
+    }
+    facingWest(): boolean {
+        return this.direction == 2
+    }
+    facingSouth(): boolean {
+        return this.direction == 3
     }
 }
