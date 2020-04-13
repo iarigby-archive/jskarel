@@ -41,7 +41,7 @@ export class Karel {
     move(): void {
         const direction = Directions[this.direction]
         if (this.frontIsClear()) {
-            this.position.move(...direction)
+            this.position = this.position.getNext(...direction)
         } else {
             throw "there is a wall in front of Karel"
         }
