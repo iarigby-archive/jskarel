@@ -1,7 +1,6 @@
 import { expect } from 'chai'
-import { Karel } from '../src/karel'
+import { Karel } from '../src'
 import { Wall } from '../src/wall'
-import { World } from '../src/world'
 import { C } from '../src/coordinates'
 
 describe('karel constructor', () => {
@@ -9,7 +8,7 @@ describe('karel constructor', () => {
         const karel = new Karel()
         expect(karel.position).eql({ x: 1, y: 1 })
         expect(karel.direction).eql(0)
-        expect(karel.toString()).eql('Karel is on position (1,1), coordinates of beepers: ')
+        expect(karel.toString()).eql('Karel is on position (1,1), coordinates of beepers: , world: 10x10')
     })
     it('custom position', () => {
         const karel = new Karel({
@@ -59,6 +58,7 @@ describe('karel beepers', () => {
     }
     const karel = new Karel({ world: world })
     it('beepers present', () => {
+        console.log(karel.world.beepers)
         expect(karel.noBeepersPresent()).be.true
         karel.move()
         expect(karel.beepersPresent()).be.true
@@ -76,7 +76,7 @@ describe('walls', () => {
         width: 3,
         height: 3
     }
-    
+
     const karel = new Karel({
         world: world
     })
@@ -99,4 +99,52 @@ describe('walls', () => {
         expect(karel.frontIsBlocked()).be.true
         expect(() => karel.move()).to.throw("there is a wall in front of Karel")
     })
+})
+
+describe('world bug', () => {
+    it('simple case', () => {
+        const karel = new Karel({
+            world: {
+                width: 3,
+                height: 3,
+                beepers: [[2, 1], [2, 1]]
+            }
+        })
+        karel.move()
+        karel.pickBeeper()
+        expect(karel.world.beepers).length(1)
+        karel.move()
+        karel.putBeeper()
+        expect(karel.world.beepers).length(2)
+        expect(karel.beepersPresent()).true
+    })
+    let tries = 0
+    it('finish infinite run', async (done) => {
+        const karel = new Karel({
+            world: {
+                width: 3,
+                height: 3,
+                beepers: [[2, 1], [2, 1]]
+            }
+        })
+        karel.move()
+        while (karel.beepersPresent()) {
+            tries++
+            // await new Promise(r => setTimeout(() => r(), 100))
+            karel.pickBeeper()
+            karel.move()
+            karel.putBeeper()
+            expect(karel.beepersPresent()).be.true
+            karel.turnLeft()
+            karel.turnLeft()
+            // console.log("beepersm: ", karel.world.beepers)
+            karel.move()
+            karel.turnLeft()
+            karel.turnLeft()
+            expect(karel.world.beepersPresent(karel.position))
+        }
+        expect(tries).equal(2)
+        done()
+    }).timeout(4000)
+
 })
