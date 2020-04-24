@@ -49,7 +49,7 @@ export class World {
         walls
             .map(wall => {
                 if (wall.length)
-                    return wall.map(C.fromArray)
+                    return Wall.fromArray(wall.map(C.fromArray))
                 return wall
             }).forEach(w => this.addWall(w))
         return this

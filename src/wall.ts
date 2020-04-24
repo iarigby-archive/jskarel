@@ -1,6 +1,9 @@
 import { C } from './coordinates'
 
 export class Wall {
+    static fromArray(arr: [C, C]): Wall {
+        return new Wall(arr[0], arr[1])
+    }
     constructor(
         public first: C,
         public second: C) { }
